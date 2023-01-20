@@ -1,0 +1,22 @@
+{
+  "name": "knighttravails",
+  "version": "1.0.0",
+  "description": "live preview : WIP",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watchnode": "node --watch main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikyw89/knightTravails.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vikyw89/knightTravails/issues"
+  },
+  "homepage": "https://github.com/vikyw89/knightTravails#readme"
+}
