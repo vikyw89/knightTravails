@@ -1,9 +1,9 @@
-class PossibleMove {
+class PositionNode {
     constructor ({row, col, next}){
         this.col = col
         this.row = row
-        this.next = next
+        this.next = next ?? null
     }
 }
 
-export { PossibleMove }
+export { PositionNode }
