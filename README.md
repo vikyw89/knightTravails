@@ -1,6 +1,11 @@
 # knightTravails
 
 live preview : WIP
+to run, clone this repo, then on CLI :
+```
+npm install
+npm run watchnode
+```
 
 <section id="assignment">
   <h3><a href="#assignment" class="anchor-link">Assignment</a></h3>
