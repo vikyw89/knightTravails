@@ -41,12 +41,11 @@ class Knight {
     knightMoves = ({ row, col }) => {
         const desiredNode = this.buildPositionTree({ row, col })
         let pointer = desiredNode
-        let reversedPath = []
+        let path = []
         while (pointer !== null) {
-            reversedPath.push({row:pointer.row, col:pointer.col})
+            path.unshift({row:pointer.row, col:pointer.col})
             pointer = pointer.prev
         }
-        const path = reversedPath.sort((a,b)=>-1)
         const printedPath = `You made it in ${path.length - 1} moves ! \nHere's your path [row,col]: \n${path.map(item=>{
             return `[${item.row},${item.col}]\n`
         }).join('')}`
