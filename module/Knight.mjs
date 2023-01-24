@@ -3,7 +3,7 @@ import { PositionNode } from "./PositionNode.mjs"
 class Knight {
     constructor ({ color, row, col }){
         this.color = color
-        this.position = new PositionNode({row:row, col:col, next:null})
+        this.position = new PositionNode({row:row, col:col})
     }
 
     moveSet = [
@@ -13,21 +13,18 @@ class Knight {
         {row:-2,col:1},{row:-2,col:-1}
     ]
 
-    availableMove = (position) => {
+    availableMove = (root) => {
         return this.moveSet.reduce((output, item)=>{
-            // console.log(output)
-            const newRow = position.row + item.row
-            const newCol = position.col + item.col
+            const newRow = root.row + item.row
+            const newCol = root.col + item.col
             if (newRow >= 8 || newRow < 0 || newCol >= 8 || newCol < 0) return output
-            return output.concat(new PositionNode({ row:newRow, col:newCol }))
+            return output.concat(new PositionNode({ row:newRow, col:newCol, prev:root }))
         },[])
     }
 
-    buildPositionTree = (desiredPosition) => {
-        const desiredPositionString = JSON.stringify(desiredPosition)
-        if (JSON.stringify(this.position) === desiredPositionString) return this.position
+    buildPositionTree = ({ row, col }) => {
+        if (this.position.row === row && this.position.col === col) return this.position
         let queue = []
-        let bfs = []
         let pointer  = this.position
         while (true) {
             const availableMove = this.availableMove(pointer)
@@ -35,42 +32,25 @@ class Knight {
             for (let i = 0; i < availableMove.length; i++){
                 pointer.next.push(availableMove[i])
                 queue.push(availableMove[i])
-                if (desiredPositionString === JSON.stringify(availableMove[i])) return
+                if (row === availableMove[i].row && col === availableMove[i].col) return availableMove[i]
             }
             pointer = queue.shift()
         }
     }
 
-    depth = (PositionNode) => {
-        return this.#depth(this.position, PositionNode, 0)
-    }
-
-    #depth = (rootNode, node, level) =>{
-        // base case
-        if (JSON.stringify(rootNode) === JSON.stringify(node)) {
-            return level
-        } else if (rootNode === null || rootNode.next === null) {
-            return 0
+    knightMoves = ({ row, col }) => {
+        const desiredNode = this.buildPositionTree({ row, col })
+        let pointer = desiredNode
+        let reversedPath = []
+        while (pointer !== null) {
+            reversedPath.push({row:pointer.row, col:pointer.col})
+            pointer = pointer.prev
         }
-        level++
-        let maxDepth = 0
-        // recursive case
-        for (let i = 0; i < rootNode.next.length; i++) {
-            maxDepth = this.#depth(rootNode.next[i], node, level)
-            if (maxDepth !== 0){
-                console.log(maxDepth)
-                return maxDepth
-            }
-        }
-    }
-
-    knightMoves = (PositionNode) => {
-        // return shortest available move to input position
-        this.buildPositionTree(PositionNode)
-        console.log(this.position)
-        console.log(this.depth(PositionNode))
-        return this.depth(PositionNode)
-        // traverse bfs to position
+        const path = reversedPath.sort((a,b)=>-1)
+        const printedPath = `You made it in ${path.length - 1} moves ! \nHere's your path [row,col]: \n${path.map(item=>{
+            return `[${item.row},${item.col}]\n`
+        }).join('')}`
+        return printedPath
     }
 }
 
